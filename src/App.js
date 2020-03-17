@@ -114,7 +114,7 @@ class App extends React.Component {
         <Router forceRefresh={false}>
           <Switch>
             <PrivateRoute path="/calendar">
-              <Container maxWidth="sm">
+              <Container maxWidth="lg">
                 <MuscleApp
                   handleAddSession={this.onAddSession}
                   muscleData={this.state.muscleData}

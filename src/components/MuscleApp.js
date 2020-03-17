@@ -86,7 +86,7 @@ export default class MuscleApp extends Component {
             <Button color="inherit">Contact Us</Button>
           </Toolbar>
         </AppBar>
-        <div>
+        <div style={{paddingTop: '10px'}}>
           <span>
             Muscle:
         </span>
@@ -96,7 +96,7 @@ export default class MuscleApp extends Component {
             name="newMuscle"
             value={this.props.muscleGroups[this.state.newMuscle]}
             onChange={this.handleChange}
-            style={{ width: '150px' }}
+            style={{ width: '150px', marginLeft: '7px' }}
           >
             {this.props.muscleGroups.map((muscleGroup, index) => {
               return (
@@ -104,7 +104,7 @@ export default class MuscleApp extends Component {
               )
             })}
           </Select>
-          <Button variant="contained" onClick={this.handleClick}>Add</Button>
+          <Button variant="contained" style={{marginLeft: '7px'}} onClick={this.handleClick}>Add</Button>
           <MuscleHeatmap
             data={this.props.muscleData}
             muscleGroups={this.props.muscleGroups}
