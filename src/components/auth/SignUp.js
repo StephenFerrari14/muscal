@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function Copyright() {
   return (
@@ -53,6 +54,7 @@ export default function SignUp(props) {
 
   const [email, onChangeEmail] = useState();
   const [password, onChangePassword] = useState();
+  const [isSubmitting, changeIsSubmitting] = useState(false);
   // console.log(email, password)
 
   const handleChangeEmail = (e) => {
@@ -65,6 +67,7 @@ export default function SignUp(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    changeIsSubmitting(true);
     props.createNewUser(email, password).then((res) => {
       console.log(res);
       window.location.pathname = '/login'
@@ -143,8 +146,9 @@ export default function SignUp(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={isSubmitting}
           >
-            Sign Up
+            {isSubmitting ? <CircularProgress size={24} /> : "Sign Up"}
           </Button>
           <Grid container justify="flex-end">
             <Grid item>

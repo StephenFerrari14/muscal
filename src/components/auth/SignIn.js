@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { withRouter, Link } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function Copyright() {
   return (
@@ -54,7 +55,9 @@ const SignIn = function(props) {
   const classes = useStyles();
   const [username, changeUsername] = useState('');
   const [password, changePassword] = useState('');
+  const [isSubmitting, changeIsSubmitting] = useState(false);
   const handleSubmit = (username, password) => {
+    changeIsSubmitting(true);
     // console.log(username, password)
     props.authenticateUser(username, password).then(() => {
       props.history.push('/calendar');
@@ -111,8 +114,9 @@ const SignIn = function(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={isSubmitting}
           >
-            Sign In
+            {isSubmitting ? <CircularProgress size={24} /> : "Sign In"}
           </Button>
           <Grid container>
             <Grid item xs>

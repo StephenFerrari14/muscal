@@ -22,7 +22,8 @@ class App extends React.Component {
     muscleGroupsRef: null,
     muscleData: [],
     muscleGroups: [],
-    hasSignedIn: true
+    hasSignedIn: true,
+    loading: true
   }
 
   componentDidMount() {
@@ -75,7 +76,7 @@ class App extends React.Component {
         const formatMuscleData = Object.keys(muscleData).map((key) => {
           return muscleData[key]
         });
-        this.setState({ muscleData: formatMuscleData })
+        this.setState({ muscleData: formatMuscleData, loading: false })
       });
     });
   }
@@ -120,6 +121,7 @@ class App extends React.Component {
                   muscleData={this.state.muscleData}
                   muscleGroups={this.state.muscleGroups}
                   handleSignOut={this.signOut}
+                  loading={this.state.loading}
                 />
               </Container>
             </PrivateRoute>

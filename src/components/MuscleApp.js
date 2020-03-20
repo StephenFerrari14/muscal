@@ -11,6 +11,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import FixedPaginationTable from '../components/tables/FixedPaginationTable';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,28 +38,26 @@ const classes = {
   },
 };
 
-/**
- * Install react-table
- * Component for Calendar
- */
-
 export default class MuscleApp extends Component {
 
   static propTypes = {
     handleAddSession: PropTypes.func,
     muscleData: PropTypes.arrayOf(PropTypes.object),
-    muscleGroups: PropTypes.array
+    muscleGroups: PropTypes.array,
+    loading: PropTypes.bool
   }
 
   static defaultProps = {
     handleAddSession: () => { },
-    muscleGroups: []
+    muscleGroups: [],
+    loading: true
   }
 
   state = {
     muscleData: [],
     newMuscle: 0
   }
+
   handleChange = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -72,6 +72,10 @@ export default class MuscleApp extends Component {
     this.props.handleAddSession(this.state.newMuscle)
   }
   render() {
+    const columns = [
+      { id: 'muscleGroupId', label: 'Muscle', format: value => this.props.muscleGroups[value] || 'Unknown' },
+      { id: 'date', label: 'Date' }
+    ];
     return (
       <div>
         <AppBar position="static">
@@ -86,7 +90,7 @@ export default class MuscleApp extends Component {
             <Button color="inherit">Contact Us</Button>
           </Toolbar>
         </AppBar>
-        <div style={{paddingTop: '10px'}}>
+        <div style={{ paddingTop: '10px' }}>
           <span>
             Muscle:
         </span>
@@ -104,15 +108,26 @@ export default class MuscleApp extends Component {
               )
             })}
           </Select>
-          <Button variant="contained" style={{marginLeft: '7px'}} onClick={this.handleClick}>Add</Button>
-          <MuscleHeatmap
-            data={this.props.muscleData}
-            muscleGroups={this.props.muscleGroups}
-          ></MuscleHeatmap>
-          <HistoryTable
+          <Button variant="contained" style={{ marginLeft: '7px' }} onClick={this.handleClick}>Add</Button>
+          <div>
+            {this.props.loading ? <CircularProgress /> :
+              <div>
+                <MuscleHeatmap
+                  data={this.props.muscleData}
+                  muscleGroups={this.props.muscleGroups}
+                ></MuscleHeatmap>
+                {/* <HistoryTable
             rows={this.props.muscleData}
             muscleGroups={this.props.muscleGroups}
-          ></HistoryTable>
+          ></HistoryTable> */}
+                <div style={{ marginTop: '7px' }}>
+                  <FixedPaginationTable
+                    rows={this.props.muscleData}
+                    columns={columns}
+                  ></FixedPaginationTable>
+                </div>
+              </div>}
+          </div>
         </div>
       </div>
     )

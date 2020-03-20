@@ -2,13 +2,13 @@ import React, { Component, Fragment } from "react";
 
 // Try changing to just one color
 const heatIntensity = {
-  1: 'blue',
-  2: 'green',
-  3: 'darkgreen',
-  4: 'orange',
-  5: 'orangered',
-  6: 'red',
-  7: 'darkred'
+  1: '#f27d79',
+  2: '#f23e38',
+  3: '#f51818',
+  4: '#e20909', 
+  5: '#db200b',
+  6: '#c7120c',
+  7: '#a8160c'
 }
 
 // Take each input 
