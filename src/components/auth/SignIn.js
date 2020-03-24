@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -51,14 +52,14 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const SignIn = function(props) {
+const SignIn = function (props) {
   const classes = useStyles();
   const [username, changeUsername] = useState('');
   const [password, changePassword] = useState('');
   const [isSubmitting, changeIsSubmitting] = useState(false);
+  const [rememberMe, changeRememberMe] = useState(false);
   const handleSubmit = (username, password) => {
     changeIsSubmitting(true);
-    // console.log(username, password)
     props.authenticateUser(username, password).then(() => {
       props.history.push('/calendar');
     });
@@ -107,6 +108,11 @@ const SignIn = function(props) {
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
+            checked={rememberMe}
+            onChange={(e) => {
+              changeRememberMe(e.target.checked);
+              props.handlePersistChange(e.target.checked);
+            }}
           />
           <Button
             type="submit"
@@ -137,6 +143,10 @@ const SignIn = function(props) {
       </Box>
     </Container>
   );
+}
+
+SignIn.propTypes = {
+  handlePersistChange: PropTypes.func
 }
 
 export default withRouter(SignIn)

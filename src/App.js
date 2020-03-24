@@ -14,8 +14,6 @@ import {
 } from "react-router-dom";
 import SignUp from './components/auth/SignUp';
 
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-
 class App extends React.Component {
   state = {
     calendarRef: null,
@@ -44,6 +42,14 @@ class App extends React.Component {
       muscleGroupId: newMuscle,
       date: format(new Date(), 'yyyy-MM-dd')
     })
+  }
+
+  changeAuthPersistence = (persist) => {
+    if (persist) {
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    } else {
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+    }
   }
 
   signOut = () => {
@@ -128,6 +134,7 @@ class App extends React.Component {
             <Route path="/login">
               <SignIn
                 authenticateUser={this.authenticateUser}
+                handlePersistChange={this.changeAuthPersistence}
               ></SignIn>
             </Route>
             <Route path="/signup">
