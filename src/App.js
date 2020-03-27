@@ -13,6 +13,11 @@ import {
   Redirect
 } from "react-router-dom";
 import SignUp from './components/auth/SignUp';
+import ForgetPassword from './components/auth/ForgotPassword';
+
+const EXCLUDED_PATHS = ['/login', '/signup', '/forgot']
+
+console.log(window.location.pathname)
 
 class App extends React.Component {
   state = {
@@ -20,20 +25,30 @@ class App extends React.Component {
     muscleGroupsRef: null,
     muscleData: [],
     muscleGroups: [],
-    hasSignedIn: true,
-    loading: true
-  }
+    hasSignedIn: false,
+    loading: true,
+    lastPath: '/login'
+  } 
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ hasSignedIn: true });
-        this.fetchMusclePicklist();
-        this.fetchWeekCalendar(user.uid);
-      } else if (window.location.pathname != '/login') {
-        window.location.pathname = '/login'
-      }
-    })
+    console.log(window.location.pathname)
+    this.setState({lastPath: window.location.pathname}, () => {
+      firebase.auth().onAuthStateChanged((user) => {
+        console.log(user)
+        if (user) {
+          this.setState({ hasSignedIn: true }, () => {
+            console.log(this.state.lastPath, window.location.pathname)
+            if (this.state.lastPath != window.location.pathname) {
+              window.location.pathname = this.state.lastPath;
+            }
+          });
+          this.fetchMusclePicklist();
+          this.fetchWeekCalendar(user.uid);
+        } else if (!EXCLUDED_PATHS.includes(window.location.pathname)) {
+          window.location.pathname = '/login'
+        }
+      })
+    });
   }
 
   onAddSession = (newMuscle) => {
@@ -53,7 +68,16 @@ class App extends React.Component {
   }
 
   signOut = () => {
-    this.setState({ hasSignedIn: false })
+    firebase.auth().signOut().then(() => {
+      this.setState({ hasSignedIn: false });
+    }
+    ).catch(err => {
+      // post a message about an error
+    });
+  }
+
+  handlePasswordReset = (emailAddress) => {
+    return firebase.auth().sendPasswordResetEmail(emailAddress);
   }
 
   // Move to service file
@@ -65,12 +89,12 @@ class App extends React.Component {
 
   fetchMusclePicklist = () => {
     const muscleGroupsRef = firebase.database().ref('/muscle-groups');
-      this.setState({ muscleGroupsRef }, () => {
-        this.state.muscleGroupsRef.on('value', (snapshot) => {
-          const muscleGroups = snapshot.val();
-          this.setState({ muscleGroups })
-        });
+    this.setState({ muscleGroupsRef }, () => {
+      this.state.muscleGroupsRef.on('value', (snapshot) => {
+        const muscleGroups = snapshot.val();
+        this.setState({ muscleGroups })
       });
+    });
   }
 
   fetchWeekCalendar = (uid) => {
@@ -98,6 +122,7 @@ class App extends React.Component {
 
   render() {
     const PrivateRoute = ({ children, ...rest }) => {
+      console.log(this.state.hasSignedIn)
       return (
         <Route
           {...rest}
@@ -141,6 +166,11 @@ class App extends React.Component {
               <SignUp
                 createNewUser={this.createNewUser}
               ></SignUp>
+            </Route>
+            <Route path="/forgot">
+              <ForgetPassword
+                handlePasswordReset={this.handlePasswordReset}
+              ></ForgetPassword>
             </Route>
           </Switch>
         </Router>

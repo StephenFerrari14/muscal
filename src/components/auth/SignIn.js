@@ -54,13 +54,17 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = function (props) {
   const classes = useStyles();
-  const [username, changeUsername] = useState('');
+  const localUsername = window.localStorage.getItem('mUser')
+  const [username, changeUsername] = useState(localUsername ? localUsername : '');
   const [password, changePassword] = useState('');
   const [isSubmitting, changeIsSubmitting] = useState(false);
-  const [rememberMe, changeRememberMe] = useState(false);
+  const [rememberMe, changeRememberMe] = useState(!!localUsername);
   const handleSubmit = (username, password) => {
     changeIsSubmitting(true);
     props.authenticateUser(username, password).then(() => {
+      if (rememberMe) {
+        window.localStorage.setItem('mUser', username);
+      }
       props.history.push('/calendar');
     });
   };
@@ -126,7 +130,7 @@ const SignIn = function (props) {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="/signup" variant="body2">
+              <Link to="/forgot" variant="body2">
                 Forgot password?
               </Link>
             </Grid>

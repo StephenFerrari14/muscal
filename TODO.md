@@ -1,12 +1,13 @@
-# Project Name
+# Muscal
 
-Project Description
+Exercise tracker with heatmap visualization
 
 ### Todo
 
-- [ ] BugL logging out doesn't clear auth state  
+- [ ] Contact Us page  
 - [ ] Style header so sigout is on the right  
 - [ ] Put header across signin/up also  
+- [ ] Host on firebase or headdesk  
 - [ ] Think about a different data format  
 - [ ] Change color pallet  
 - [ ] Look into changing to hooks  
@@ -16,11 +17,14 @@ Project Description
 
 ### In Progress
 
-- [ ] Implement Remember me  
-- [ ] Host on firebase  
+- [ ] Bug: Redirect logic  
 
 ### Done ✓
 
+- [x] Forget password  
+- [x] BugL logging out doesn't clear auth state  
 - [x] Figure out how to host  
+- [x] Implement Remember me  
+- [x] Add username save to remember me  
 - [x] Make table paginated  
 
