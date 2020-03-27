@@ -14,6 +14,8 @@ import {
 } from "react-router-dom";
 import SignUp from './components/auth/SignUp';
 import ForgetPassword from './components/auth/ForgotPassword';
+import ContactUs from './components/ContactUs';
+import Header from './components/Header';
 
 const EXCLUDED_PATHS = ['/login', '/signup', '/forgot']
 
@@ -143,6 +145,10 @@ class App extends React.Component {
     }
     return (
       <div className="App">
+        <Header
+          hasSignedIn={this.state.hasSignedIn}
+          handleSignOut={this.signOut}
+        />
         <Router forceRefresh={false}>
           <Switch>
             <PrivateRoute path="/calendar">
@@ -151,7 +157,6 @@ class App extends React.Component {
                   handleAddSession={this.onAddSession}
                   muscleData={this.state.muscleData}
                   muscleGroups={this.state.muscleGroups}
-                  handleSignOut={this.signOut}
                   loading={this.state.loading}
                 />
               </Container>
@@ -171,6 +176,9 @@ class App extends React.Component {
               <ForgetPassword
                 handlePasswordReset={this.handlePasswordReset}
               ></ForgetPassword>
+            </Route>
+            <Route path="/contact">
+              <ContactUs></ContactUs>
             </Route>
           </Switch>
         </Router>

@@ -61,9 +61,6 @@ export default class MuscleApp extends Component {
     ];
     return (
       <div>
-        <Header
-          handleSignOut={this.props.handleSignOut}
-        ></Header>
         <div style={{ paddingTop: '10px' }}>
           <span>
             Muscle:

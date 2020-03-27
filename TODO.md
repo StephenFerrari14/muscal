@@ -4,9 +4,8 @@ Exercise tracker with heatmap visualization
 
 ### Todo
 
-- [ ] Contact Us page  
+- [ ] Conditional header items  
 - [ ] Style header so sigout is on the right  
-- [ ] Put header across signin/up also  
 - [ ] Host on firebase or headdesk  
 - [ ] Think about a different data format  
 - [ ] Change color pallet  
@@ -18,12 +17,14 @@ Exercise tracker with heatmap visualization
 ### In Progress
 
 - [ ] Bug: Redirect logic  
+- [ ] Contact Us page  
 
 ### Done ✓
 
 - [x] Forget password  
 - [x] BugL logging out doesn't clear auth state  
 - [x] Figure out how to host  
+- [x] Put header across signin/up also  
 - [x] Implement Remember me  
 - [x] Add username save to remember me  
 - [x] Make table paginated  
