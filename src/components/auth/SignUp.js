@@ -16,18 +16,7 @@ import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Copyright from '../Copyright';
-
-const linkStyles = makeStyles(() => ({
-  navlink: {
-    textDecoration: 'none',
-    color: 'white'
-  },
-  navbarLink: {
-    textDecoration: 'none',
-    color: 'black'
-  }
-}
-));
+import { useLinkStyles } from "../styles/LinkStyles";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -51,12 +40,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp(props) {
   const classes = useStyles();
-  const linkClasses = linkStyles()
+  const linkClasses = useLinkStyles()
 
   const [email, onChangeEmail] = useState();
   const [password, onChangePassword] = useState();
   const [isSubmitting, changeIsSubmitting] = useState(false);
-
 
   const handleChangeEmail = (e) => {
     onChangeEmail(e.target.value)
@@ -69,8 +57,7 @@ export default function SignUp(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     changeIsSubmitting(true);
-    props.createNewUser(email, password).then((res) => {
-      console.log(res);
+    props.createNewUser(email, password).then(() => {
       window.location.pathname = '/login'
     }).catch((error) => console.log(error));
   };
@@ -90,29 +77,6 @@ export default function SignUp(props) {
             <Grid item xs={12}>
               Sign up for Muscal and start recording your exercises today!
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

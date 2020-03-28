@@ -11,21 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { withRouter, Link } from 'react-router-dom';
-// import Link from '@material-ui/core/Link'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Copyright from '../Copyright'
-
-const linkStyles = makeStyles(() => ({
-  navlink: {
-    textDecoration: 'none',
-    color: 'white'
-  },
-  navbarLink: {
-    textDecoration: 'none',
-    color: 'black'
-  }
-}
-));
+import {useLinkStyles} from '../styles/LinkStyles';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -49,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 const ForgotPassword = (props) => {
   const classes = useStyles();
-  const linkClasses = linkStyles();
+  const linkClasses = useLinkStyles();
   const [username, changeUsername] = useState('');
   const [isSubmitting, changeIsSubmiting] = useState(false);
   const [requestSubmitted, changeRequestSubmitted] = useState(false);
@@ -116,7 +104,7 @@ const ForgotPassword = (props) => {
 }
 
 ForgotPassword.propTypes = {
-  handlePasswordReset: PropTypes.func
+  handlePasswordReset: PropTypes.func.isRequired
 }
 
 export default withRouter(ForgotPassword);

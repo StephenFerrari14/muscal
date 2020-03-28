@@ -17,6 +17,7 @@ Exercise tracker with heatmap visualization
 ### In Progress
 
 - [ ] Clean up  
+- [ ] Can I move copy write to app.js?  
 
 ### Done ✓
 

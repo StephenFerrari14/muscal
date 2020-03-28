@@ -6,7 +6,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-// import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -16,18 +15,7 @@ import Container from '@material-ui/core/Container';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Copyright from '../Copyright';
-
-const linkStyles = makeStyles(() => ({
-  navlink: {
-    textDecoration: 'none',
-    color: 'white'
-  },
-  navbarLink: {
-    textDecoration: 'none',
-    color: 'black'
-  }
-}
-));
+import { useLinkStyles } from '../styles/LinkStyles'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -41,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -49,30 +37,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-
-
 const SignIn = function (props) {
   const classes = useStyles();
-  const linkClasses = linkStyles();
+  const linkClasses = useLinkStyles();
   const localUsername = window.localStorage.getItem('mUser')
   const [username, changeUsername] = useState(localUsername ? localUsername : '');
   const [password, changePassword] = useState('');
   const [isSubmitting, changeIsSubmitting] = useState(false);
   const [rememberMe, changeRememberMe] = useState(!!localUsername);
   const [redirectToReferrer, changeRedirect] = useState(false);
-  const handleSubmit = (username, password) => {
-    changeIsSubmitting(true);
-    props.authenticateUser(username, password).then(() => {
-      if (rememberMe) {
-        window.localStorage.setItem('mUser', username);
-      } else {
-        window.localStorage.removeItem('mUser');
-      }
-      // props.history.push('/calendar');
-      changeRedirect(true);
-    });
-  };
 
   const { from } = props.location.state || { from: { pathname: '/' } }
 
@@ -81,6 +54,18 @@ const SignIn = function (props) {
       <Redirect to={from} />
     );
   }
+
+  const handleSubmit = (username, password) => {
+    changeIsSubmitting(true);
+    props.authenticateUser(username, password).then(() => {
+      if (rememberMe) {
+        window.localStorage.setItem('mUser', username);
+      } else {
+        window.localStorage.removeItem('mUser');
+      }
+      changeRedirect(true);
+    });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -143,7 +128,7 @@ const SignIn = function (props) {
           </Button>
           <Grid container>
             <Grid item xs>
-            <Link to="/forgot" variant="body2" className={linkClasses.navbarLink}>
+              <Link to="/forgot" variant="body2" className={linkClasses.navbarLink}>
                 Forgot password?
               </Link>
             </Grid>
@@ -163,7 +148,8 @@ const SignIn = function (props) {
 }
 
 SignIn.propTypes = {
-  handlePersistChange: PropTypes.func
+  authenticateUser: PropTypes.func.isRequired,
+  handlePersistChange: PropTypes.func.isRequired
 }
 
 export default withRouter(SignIn)
