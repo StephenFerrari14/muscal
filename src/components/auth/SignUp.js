@@ -15,19 +15,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Copyright from '../Copyright';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" to="/calendar">
-        Muscal
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+const linkStyles = makeStyles(() => ({
+  navlink: {
+    textDecoration: 'none',
+    color: 'white'
+  },
+  navbarLink: {
+    textDecoration: 'none',
+    color: 'black'
+  }
 }
+));
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -51,11 +51,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp(props) {
   const classes = useStyles();
+  const linkClasses = linkStyles()
 
   const [email, onChangeEmail] = useState();
   const [password, onChangePassword] = useState();
   const [isSubmitting, changeIsSubmitting] = useState(false);
-  // console.log(email, password)
+
 
   const handleChangeEmail = (e) => {
     onChangeEmail(e.target.value)
@@ -152,7 +153,7 @@ export default function SignUp(props) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link to="/login" variant="body2">
+              <Link to="/login" variant="body2" className={linkClasses.navbarLink}>
                 Already have an account? Sign in
               </Link>
             </Grid>

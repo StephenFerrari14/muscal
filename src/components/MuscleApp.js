@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import FixedPaginationTable from '../components/tables/FixedPaginationTable';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Header from "./Header";
+import Copyright from '../components/Copyright';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,7 +63,7 @@ export default class MuscleApp extends Component {
       <div>
         <div style={{ paddingTop: '10px' }}>
           <span>
-            Muscle:
+            Exercise:
         </span>
           <Select
             labelId="newMuscle"
@@ -75,7 +75,7 @@ export default class MuscleApp extends Component {
           >
             {this.props.muscleGroups.map((muscleGroup, index) => {
               return (
-                <MenuItem value={index}>{muscleGroup}</MenuItem>
+                <MenuItem key={`exercise_menu_${index}`} value={index}>{muscleGroup}</MenuItem>
               )
             })}
           </Select>
@@ -87,10 +87,6 @@ export default class MuscleApp extends Component {
                   data={this.props.muscleData}
                   muscleGroups={this.props.muscleGroups}
                 ></MuscleHeatmap>
-                {/* <HistoryTable
-            rows={this.props.muscleData}
-            muscleGroups={this.props.muscleGroups}
-          ></HistoryTable> */}
                 <div style={{ marginTop: '7px' }}>
                   <FixedPaginationTable
                     rows={this.props.muscleData}
@@ -100,6 +96,7 @@ export default class MuscleApp extends Component {
               </div>}
           </div>
         </div>
+        <Copyright></Copyright>
       </div>
     )
   }

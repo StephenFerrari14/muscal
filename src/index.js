@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
-// import Firebase, { FirebaseContext } from './components/Firebase';
-
-{/* <FirebaseContext.Provider value={new Firebase()}>
-    <App />
-  </FirebaseContext.Provider>, */}
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#757575' }
+  }
+});
 
 ReactDOM.render(
-  <App/>,
+  <MuiThemeProvider theme={theme}>
+    <App />
+  </MuiThemeProvider>,
   document.getElementById('root'),
 );
 

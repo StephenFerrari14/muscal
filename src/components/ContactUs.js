@@ -1,7 +1,9 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Copyright from './Copyright';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -21,17 +23,26 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  top: {
+    paddingTop: '20px'
+  }
 }));
 
 const ContactUs = () => {
-  const classes = makeStyles();
+  const classes = useStyles();
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        Contact us at contact@headdesk.us
-      </div>
-    </Container>
+      <Container component="main" maxWidth="xs" >
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <div className={classes.paper}>
+              Contact us at contact@headdesk.us
+          </div>
+          </Grid>
+        </Grid>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
   );
 }
 

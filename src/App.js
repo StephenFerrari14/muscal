@@ -16,10 +16,15 @@ import SignUp from './components/auth/SignUp';
 import ForgetPassword from './components/auth/ForgotPassword';
 import ContactUs from './components/ContactUs';
 import Header from './components/Header';
+import { createBrowserHistory } from 'history';
+import AuthProvider from './components/auth/AuthProvider'
+
+const history = createBrowserHistory();
 
 const EXCLUDED_PATHS = ['/login', '/signup', '/forgot']
 
-console.log(window.location.pathname)
+const loadedPath = window.location.pathname
+// console.log(`Loaded at: ${loadedPath}`);
 
 class App extends React.Component {
   state = {
@@ -27,30 +32,40 @@ class App extends React.Component {
     muscleGroupsRef: null,
     muscleData: [],
     muscleGroups: [],
-    hasSignedIn: false,
+    hasSignedIn: true,
     loading: true,
     lastPath: '/login'
-  } 
+  }
 
   componentDidMount() {
-    console.log(window.location.pathname)
-    this.setState({lastPath: window.location.pathname}, () => {
-      firebase.auth().onAuthStateChanged((user) => {
-        console.log(user)
-        if (user) {
-          this.setState({ hasSignedIn: true }, () => {
-            console.log(this.state.lastPath, window.location.pathname)
-            if (this.state.lastPath != window.location.pathname) {
-              window.location.pathname = this.state.lastPath;
-            }
-          });
-          this.fetchMusclePicklist();
-          this.fetchWeekCalendar(user.uid);
-        } else if (!EXCLUDED_PATHS.includes(window.location.pathname)) {
-          window.location.pathname = '/login'
-        }
-      })
-    });
+    // console.log(window.location.pathname)
+    // start auth listener
+    // if there is no user then they need to login so redirect
+    // if there is a user then allow them to go to the app and get data
+    // only need to call muscle picklist and calendar data once
+
+    // If they land on a protected page then we need to wait for the auth to happen before redirecting though
+    // this.setState({lastPath: window.location.pathname}, () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      // console.log(user)
+      if (user) {
+        this.setState({ hasSignedIn: true }, () => {
+          // console.log(this.state.lastPath, window.location.pathname)
+          // Causes infinite loop, because it needs Router change
+          // console.log(loadedPath, window.location.pathname)
+          // if (loadedPath != window.location.pathname) {
+          //   // window.location.pathname = loadedPath;
+          //   history.push(loadedPath);
+          // }
+        });
+        this.fetchMusclePicklist();
+        this.fetchWeekCalendar(user.uid);
+      } else if (!EXCLUDED_PATHS.includes(window.location.pathname)) {
+        // window.location.pathname = '/login' // Think there is a declarative way to do this
+        this.setState({hasSignedIn: false})
+      }
+    })
+    // });
   }
 
   onAddSession = (newMuscle) => {
@@ -65,13 +80,13 @@ class App extends React.Component {
     if (persist) {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     } else {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
     }
   }
 
   signOut = () => {
-    firebase.auth().signOut().then(() => {
-      this.setState({ hasSignedIn: false });
+    return firebase.auth().signOut().then(() => {
+      this.setState({ hasSignedIn: false, muscleData: [] });
     }
     ).catch(err => {
       // post a message about an error
@@ -124,7 +139,7 @@ class App extends React.Component {
 
   render() {
     const PrivateRoute = ({ children, ...rest }) => {
-      console.log(this.state.hasSignedIn)
+      // console.log(this.state.hasSignedIn)
       return (
         <Route
           {...rest}
@@ -145,11 +160,14 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-        <Header
-          hasSignedIn={this.state.hasSignedIn}
-          handleSignOut={this.signOut}
-        />
-        <Router forceRefresh={false}>
+        <Router forceRefresh={false} history={history}>
+          {/* <AuthProvider
+            loadedPath={loadedPath}
+          ></AuthProvider> */}
+          <Header
+            hasSignedIn={this.state.hasSignedIn}
+            handleSignOut={this.signOut}
+          />
           <Switch>
             <PrivateRoute path="/calendar">
               <Container maxWidth="lg">

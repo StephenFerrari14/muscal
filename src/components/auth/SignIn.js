@@ -13,21 +13,21 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, Redirect } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Copyright from '../Copyright';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" to="/calendar">
-        Muscal
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+const linkStyles = makeStyles(() => ({
+  navlink: {
+    textDecoration: 'none',
+    color: 'white'
+  },
+  navbarLink: {
+    textDecoration: 'none',
+    color: 'black'
+  }
 }
+));
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -54,20 +54,33 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = function (props) {
   const classes = useStyles();
+  const linkClasses = linkStyles();
   const localUsername = window.localStorage.getItem('mUser')
   const [username, changeUsername] = useState(localUsername ? localUsername : '');
   const [password, changePassword] = useState('');
   const [isSubmitting, changeIsSubmitting] = useState(false);
   const [rememberMe, changeRememberMe] = useState(!!localUsername);
+  const [redirectToReferrer, changeRedirect] = useState(false);
   const handleSubmit = (username, password) => {
     changeIsSubmitting(true);
     props.authenticateUser(username, password).then(() => {
       if (rememberMe) {
         window.localStorage.setItem('mUser', username);
+      } else {
+        window.localStorage.removeItem('mUser');
       }
-      props.history.push('/calendar');
+      // props.history.push('/calendar');
+      changeRedirect(true);
     });
   };
+
+  const { from } = props.location.state || { from: { pathname: '/' } }
+
+  if (redirectToReferrer) {
+    return (
+      <Redirect to={from} />
+    );
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -130,12 +143,12 @@ const SignIn = function (props) {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="/forgot" variant="body2">
+            <Link to="/forgot" variant="body2" className={linkClasses.navbarLink}>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link to="/signup" variant="body2">
+              <Link to="/signup" variant="body2" className={linkClasses.navbarLink}>
                 Don't have an account? Sign Up
               </Link>
             </Grid>
