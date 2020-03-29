@@ -1,25 +1,27 @@
-import React from 'react';
-import Container from '@material-ui/core/Container';
-import MuscleApp from './components/MuscleApp';
-import './App.css';
-import firebase from './components/Firebase/firebase'
-import { format, startOfWeek } from 'date-fns'
-import SignIn from './components/auth/SignIn';
+import React from "react";
+import Container from "@material-ui/core/Container";
+import MuscleApp from "./components/MuscleApp";
+import "./App.css";
+import firebase from "./components/Firebase/firebase";
+import { format, startOfWeek } from "date-fns";
+import SignIn from "./components/auth/SignIn";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect
 } from "react-router-dom";
-import SignUp from './components/auth/SignUp';
-import ForgetPassword from './components/auth/ForgotPassword';
-import ContactUs from './components/ContactUs';
-import Header from './components/Header';
-import { createBrowserHistory } from 'history';
+import SignUp from "./components/auth/SignUp";
+import ForgetPassword from "./components/auth/ForgotPassword";
+import ContactUs from "./components/ContactUs";
+import Header from "./components/Header";
+import { createBrowserHistory } from "history";
+import Copyright from "./components/Copyright";
+import Box from "@material-ui/core/Box";
 
 const history = createBrowserHistory();
 
-const EXCLUDED_PATHS = ['/login', '/signup', '/forgot']
+const EXCLUDED_PATHS = ["/login", "/signup", "/forgot"];
 
 class App extends React.Component {
   state = {
@@ -28,85 +30,94 @@ class App extends React.Component {
     muscleData: [],
     muscleGroups: [],
     hasSignedIn: true,
-    loading: true,
-  }
+    loading: true
+  };
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ hasSignedIn: true });
         this.fetchMusclePicklist();
         this.fetchWeekCalendar(user.uid);
-      } else if (!EXCLUDED_PATHS.includes(window.location.pathname)) { // Check if I still need this
-        this.setState({ hasSignedIn: false })
       }
-    })
+      // else if (!EXCLUDED_PATHS.includes(window.location.pathname)) { // Check if I still need this
+      //   this.setState({ hasSignedIn: false })
+      // }
+    });
   }
 
-  onAddSession = (newMuscle) => {
-    const newWorkoutSession = this.state.calendarRef.push()
+  onAddSession = newMuscle => {
+    const newWorkoutSession = this.state.calendarRef.push();
     newWorkoutSession.set({
       muscleGroupId: newMuscle,
-      date: format(new Date(), 'yyyy-MM-dd')
-    })
-  }
+      date: format(new Date(), "yyyy-MM-dd")
+    });
+  };
 
-  changeAuthPersistence = (persist) => {
+  changeAuthPersistence = persist => {
     if (persist) {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     } else {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
     }
-  }
+  };
 
   signOut = async () => {
     try {
       await firebase.auth().signOut();
       this.setState({ hasSignedIn: false, muscleData: [] });
-    }
-    catch (err) { }
-  }
+    } catch (err) {}
+  };
 
-  handlePasswordReset = (emailAddress) => {
+  handlePasswordReset = emailAddress => {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
-  }
+  };
 
   createNewUser = (username, password) => {
-    return firebase.auth().createUserWithEmailAndPassword(username, password)
-  }
+    return firebase.auth().createUserWithEmailAndPassword(username, password);
+  };
 
-  sendResetPassword = (emailAddress) => firebase.auth().sendPasswordResetEmail(emailAddress)
+  sendResetPassword = emailAddress =>
+    firebase.auth().sendPasswordResetEmail(emailAddress);
 
   fetchMusclePicklist = () => {
-    const muscleGroupsRef = firebase.database().ref('/muscle-groups');
+    const muscleGroupsRef = firebase.database().ref("/muscle-groups");
     this.setState({ muscleGroupsRef }, () => {
-      this.state.muscleGroupsRef.on('value', (snapshot) => {
+      this.state.muscleGroupsRef.on("value", snapshot => {
         const muscleGroups = snapshot.val();
-        this.setState({ muscleGroups })
+        this.setState({ muscleGroups });
       });
     });
-  }
+  };
 
-  fetchWeekCalendar = (uid) => {
-    var calendarRef = firebase.database().ref(`/calendar-data/${uid}/${format(startOfWeek(new Date()), 'yyyy-MM-dd')}`);
+  fetchWeekCalendar = uid => {
+    var calendarRef = firebase
+      .database()
+      .ref(
+        `/calendar-data/${uid}/${format(startOfWeek(new Date()), "yyyy-MM-dd")}`
+      );
     this.setState({ calendarRef }, () => {
-      this.state.calendarRef.on('value', (snapshot) => {
+      this.state.calendarRef.on("value", snapshot => {
         const muscleData = snapshot.val() || {};
-        const formatMuscleData = Object.keys(muscleData).map((key) => {
-          return muscleData[key]
+        const formatMuscleData = Object.keys(muscleData).map(key => {
+          return muscleData[key];
         });
-        this.setState({ muscleData: formatMuscleData, loading: false })
+        this.setState({ muscleData: formatMuscleData, loading: false });
       });
     });
-  }
+  };
 
   authenticateUser = (username, password) => {
-    return firebase.auth().signInWithEmailAndPassword(username, password).then((session) => {
-      this.setState({ hasSignedIn: true });
-      this.fetchMusclePicklist();
-      this.fetchWeekCalendar(session.user.uid);
-    }).catch(err => console.log(err)) // Post a message
-  }
+    return firebase
+      .auth()
+      .signInWithEmailAndPassword(username, password)
+      .then(session => {
+        this.setState({ hasSignedIn: true });
+        this.fetchMusclePicklist();
+        this.fetchWeekCalendar(session.user.uid);
+      })
+      .catch(err => console.log(err)); // Post a message
+  };
 
   render() {
     const PrivateRoute = ({ children, ...rest }) => {
@@ -117,17 +128,17 @@ class App extends React.Component {
             this.state.hasSignedIn ? (
               children
             ) : (
-                <Redirect
-                  to={{
-                    pathname: "/login",
-                    state: { from: location }
-                  }}
-                />
-              )
+              <Redirect
+                to={{
+                  pathname: "/login",
+                  state: { from: location }
+                }}
+              />
+            )
           }
         />
       );
-    }
+    };
     return (
       <div className="App">
         <Router forceRefresh={false} history={history}>
@@ -136,6 +147,16 @@ class App extends React.Component {
             handleSignOut={this.signOut}
           />
           <Switch>
+            <PrivateRoute path="/">
+              <Container maxWidth="lg">
+                <MuscleApp
+                  handleAddSession={this.onAddSession}
+                  muscleData={this.state.muscleData}
+                  muscleGroups={this.state.muscleGroups}
+                  loading={this.state.loading}
+                />
+              </Container>
+            </PrivateRoute>
             <PrivateRoute path="/calendar">
               <Container maxWidth="lg">
                 <MuscleApp
@@ -153,9 +174,7 @@ class App extends React.Component {
               ></SignIn>
             </Route>
             <Route path="/signup">
-              <SignUp
-                createNewUser={this.createNewUser}
-              ></SignUp>
+              <SignUp createNewUser={this.createNewUser}></SignUp>
             </Route>
             <Route path="/forgot">
               <ForgetPassword
@@ -166,6 +185,9 @@ class App extends React.Component {
               <ContactUs></ContactUs>
             </Route>
           </Switch>
+          <Box mt={8}>
+            <Copyright />
+          </Box>
         </Router>
       </div>
     );
