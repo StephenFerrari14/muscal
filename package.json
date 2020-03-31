@@ -16,7 +16,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "sniff": "./node_modules/prettier/bin-prettier.js --check \"src/**/*.js\""
+    "sniff": "./node_modules/prettier/bin-prettier.js --check \"src/**/*.js\"",
+    "sniff-fix": "./node_modules/prettier/bin-prettier.js --write \"src/**/*.js\""
   },
   "eslintConfig": {
     "extends": "react-app"

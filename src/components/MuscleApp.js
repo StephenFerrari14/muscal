@@ -31,7 +31,6 @@ export default class MuscleApp extends Component {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    console.log(event);
 
     this.setState({
       [name]: value,
