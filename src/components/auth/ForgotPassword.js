@@ -13,27 +13,27 @@ import { withRouter, Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLinkStyles } from "../styles/LinkStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
-const ForgotPassword = props => {
+const ForgotPassword = (props) => {
   const classes = useStyles();
   const linkClasses = useLinkStyles();
   const [username, changeUsername] = useState("");
@@ -56,7 +56,7 @@ const ForgotPassword = props => {
           <form
             className={classes.form}
             noValidate
-            onSubmit={e => {
+            onSubmit={(e) => {
               e.preventDefault();
               changeIsSubmiting(true);
               props
@@ -64,7 +64,7 @@ const ForgotPassword = props => {
                 .then(() => {
                   changeRequestSubmitted(true);
                 })
-                .catch(err => {
+                .catch((err) => {
                   changeIsSubmiting(false);
                 });
             }}
@@ -79,7 +79,7 @@ const ForgotPassword = props => {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={e => changeUsername(e.target.value)}
+              onChange={(e) => changeUsername(e.target.value)}
               value={username}
             />
             <Button
@@ -111,7 +111,7 @@ const ForgotPassword = props => {
 };
 
 ForgotPassword.propTypes = {
-  handlePasswordReset: PropTypes.func.isRequired
+  handlePasswordReset: PropTypes.func.isRequired,
 };
 
 export default withRouter(ForgotPassword);

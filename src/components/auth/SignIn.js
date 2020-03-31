@@ -15,27 +15,27 @@ import { withRouter, Link, Redirect } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLinkStyles } from "../styles/LinkStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%",
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
-const SignIn = function(props) {
+const SignIn = function (props) {
   const classes = useStyles();
   const linkClasses = useLinkStyles();
   const localUsername = window.localStorage.getItem("mUser");
@@ -47,7 +47,7 @@ const SignIn = function(props) {
   const [rememberMe, changeRememberMe] = useState(!!localUsername);
   const [redirectToReferrer, changeRedirect] = useState(false);
 
-  const { from } = props.location.state || { from: { pathname: "/" } };
+  const { from } = props.location.state || { from: { pathname: "/calendar" } };
 
   if (redirectToReferrer) {
     return <Redirect to={from} />;
@@ -78,7 +78,7 @@ const SignIn = function(props) {
         <form
           className={classes.form}
           noValidate
-          onSubmit={e => {
+          onSubmit={(e) => {
             e.preventDefault();
             handleSubmit(username, password);
           }}
@@ -93,7 +93,7 @@ const SignIn = function(props) {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={e => changeUsername(e.target.value)}
+            onChange={(e) => changeUsername(e.target.value)}
             value={username}
           />
           <TextField
@@ -106,14 +106,14 @@ const SignIn = function(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={e => changePassword(e.target.value)}
+            onChange={(e) => changePassword(e.target.value)}
             value={password}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
             checked={rememberMe}
-            onChange={e => {
+            onChange={(e) => {
               changeRememberMe(e.target.checked);
               props.handlePersistChange(e.target.checked);
             }}
@@ -156,7 +156,7 @@ const SignIn = function(props) {
 
 SignIn.propTypes = {
   authenticateUser: PropTypes.func.isRequired,
-  handlePersistChange: PropTypes.func.isRequired
+  handlePersistChange: PropTypes.func.isRequired,
 };
 
 export default withRouter(SignIn);

@@ -12,29 +12,29 @@ export default class MuscleApp extends Component {
     handleAddSession: PropTypes.func,
     muscleData: PropTypes.arrayOf(PropTypes.object),
     muscleGroups: PropTypes.array,
-    loading: PropTypes.bool
+    loading: PropTypes.bool,
   };
 
   static defaultProps = {
     handleAddSession: () => {},
     muscleGroups: [],
     muscleData: [],
-    loading: true
+    loading: true,
   };
 
   state = {
     muscleData: [],
-    newMuscle: 0
+    newMuscle: 0,
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     console.log(event);
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
   handleClick = () => {
@@ -45,9 +45,9 @@ export default class MuscleApp extends Component {
       {
         id: "muscleGroupId",
         label: "Muscle",
-        format: value => this.props.muscleGroups[value] || "Unknown"
+        format: (value) => this.props.muscleGroups[value] || "Unknown",
       },
-      { id: "date", label: "Date" }
+      { id: "date", label: "Date" },
     ];
     return (
       <div>

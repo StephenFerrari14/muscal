@@ -11,24 +11,24 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useLinkStyles } from "./styles/LinkStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }));
 
-const Header = props => {
+const Header = (props) => {
   const classes = useStyles();
   const linkClasses = useLinkStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -115,7 +115,7 @@ const Header = props => {
 
 Header.propTypes = {
   handleSignOut: PropTypes.func,
-  hasSignedIn: PropTypes.bool
+  hasSignedIn: PropTypes.bool,
 };
 
 export default withRouter(Header);

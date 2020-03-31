@@ -11,11 +11,11 @@ import TableRow from "@material-ui/core/TableRow";
 
 const useStyles = makeStyles({
   root: {
-    width: "100%"
+    width: "100%",
   },
   container: {
-    maxHeight: 440
-  }
+    maxHeight: 440,
+  },
 });
 
 export default function StickyHeadTable(props) {
@@ -28,7 +28,7 @@ export default function StickyHeadTable(props) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };

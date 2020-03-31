@@ -12,24 +12,24 @@ import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLinkStyles } from "../styles/LinkStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
 export default function SignUp(props) {
@@ -40,15 +40,15 @@ export default function SignUp(props) {
   const [password, onChangePassword] = useState();
   const [isSubmitting, changeIsSubmitting] = useState(false);
 
-  const handleChangeEmail = e => {
+  const handleChangeEmail = (e) => {
     onChangeEmail(e.target.value);
   };
 
-  const handleChangePassword = e => {
+  const handleChangePassword = (e) => {
     onChangePassword(e.target.value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     changeIsSubmitting(true);
     props
@@ -56,7 +56,7 @@ export default function SignUp(props) {
       .then(() => {
         window.location.pathname = "/login";
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   return (

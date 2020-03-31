@@ -7,7 +7,7 @@ const HEAT_INTENSITIES = {
   4: "#e20909",
   5: "#db200b",
   6: "#c7120c",
-  7: "#a8160c"
+  7: "#a8160c",
 };
 
 export default class MuscleHeatmap extends Component {
@@ -26,16 +26,16 @@ export default class MuscleHeatmap extends Component {
           display: "flex",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          marginTop: "18px"
+          marginTop: "18px",
         }}
       >
-        {Object.keys(heatmap).map(key => {
+        {Object.keys(heatmap).map((key) => {
           const intensityStyle = {
             width: "50px",
             height: "50px",
             background: HEAT_INTENSITIES[heatmap[key]] || 1,
             padding: "5px",
-            color: "white"
+            color: "white",
           };
           return (
             <div key={key} style={intensityStyle}>

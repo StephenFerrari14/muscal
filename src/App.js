@@ -9,7 +9,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import SignUp from "./components/auth/SignUp";
 import ForgetPassword from "./components/auth/ForgotPassword";
@@ -30,11 +30,11 @@ class App extends React.Component {
     muscleData: [],
     muscleGroups: [],
     hasSignedIn: true,
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ hasSignedIn: true });
         this.fetchMusclePicklist();
@@ -46,15 +46,15 @@ class App extends React.Component {
     });
   }
 
-  onAddSession = newMuscle => {
+  onAddSession = (newMuscle) => {
     const newWorkoutSession = this.state.calendarRef.push();
     newWorkoutSession.set({
       muscleGroupId: newMuscle,
-      date: format(new Date(), "yyyy-MM-dd")
+      date: format(new Date(), "yyyy-MM-dd"),
     });
   };
 
-  changeAuthPersistence = persist => {
+  changeAuthPersistence = (persist) => {
     if (persist) {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     } else {
@@ -69,7 +69,7 @@ class App extends React.Component {
     } catch (err) {}
   };
 
-  handlePasswordReset = emailAddress => {
+  handlePasswordReset = (emailAddress) => {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
   };
 
@@ -77,29 +77,29 @@ class App extends React.Component {
     return firebase.auth().createUserWithEmailAndPassword(username, password);
   };
 
-  sendResetPassword = emailAddress =>
+  sendResetPassword = (emailAddress) =>
     firebase.auth().sendPasswordResetEmail(emailAddress);
 
   fetchMusclePicklist = () => {
     const muscleGroupsRef = firebase.database().ref("/muscle-groups");
     this.setState({ muscleGroupsRef }, () => {
-      this.state.muscleGroupsRef.on("value", snapshot => {
+      this.state.muscleGroupsRef.on("value", (snapshot) => {
         const muscleGroups = snapshot.val();
         this.setState({ muscleGroups });
       });
     });
   };
 
-  fetchWeekCalendar = uid => {
+  fetchWeekCalendar = (uid) => {
     var calendarRef = firebase
       .database()
       .ref(
         `/calendar-data/${uid}/${format(startOfWeek(new Date()), "yyyy-MM-dd")}`
       );
     this.setState({ calendarRef }, () => {
-      this.state.calendarRef.on("value", snapshot => {
+      this.state.calendarRef.on("value", (snapshot) => {
         const muscleData = snapshot.val() || {};
-        const formatMuscleData = Object.keys(muscleData).map(key => {
+        const formatMuscleData = Object.keys(muscleData).map((key) => {
           return muscleData[key];
         });
         this.setState({ muscleData: formatMuscleData, loading: false });
@@ -111,12 +111,12 @@ class App extends React.Component {
     return firebase
       .auth()
       .signInWithEmailAndPassword(username, password)
-      .then(session => {
+      .then((session) => {
         this.setState({ hasSignedIn: true });
         this.fetchMusclePicklist();
         this.fetchWeekCalendar(session.user.uid);
       })
-      .catch(err => console.log(err)); // Post a message
+      .catch((err) => console.log(err)); // Post a message
   };
 
   render() {
@@ -131,7 +131,7 @@ class App extends React.Component {
               <Redirect
                 to={{
                   pathname: "/login",
-                  state: { from: location }
+                  state: { from: location },
                 }}
               />
             )
