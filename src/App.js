@@ -21,8 +21,6 @@ import Box from "@material-ui/core/Box";
 
 const history = createBrowserHistory();
 
-const EXCLUDED_PATHS = ["/login", "/signup", "/forgot"];
-
 class App extends React.Component {
   state = {
     calendarRef: null,
@@ -39,10 +37,9 @@ class App extends React.Component {
         this.setState({ hasSignedIn: true });
         this.fetchMusclePicklist();
         this.fetchWeekCalendar(user.uid);
+      } else {
+        this.setState({ hasSignedIn: false });
       }
-      // else if (!EXCLUDED_PATHS.includes(window.location.pathname)) { // Check if I still need this
-      //   this.setState({ hasSignedIn: false })
-      // }
     });
   }
 
@@ -116,7 +113,7 @@ class App extends React.Component {
         this.fetchMusclePicklist();
         this.fetchWeekCalendar(session.user.uid);
       })
-      .catch((err) => console.log(err)); // Post a message
+      .catch((err) => console.log(err));
   };
 
   render() {
