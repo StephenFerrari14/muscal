@@ -147,16 +147,6 @@ class App extends React.Component {
             handleSignOut={this.signOut}
           />
           <Switch>
-            <PrivateRoute path="/">
-              <Container maxWidth="lg">
-                <MuscleApp
-                  handleAddSession={this.onAddSession}
-                  muscleData={this.state.muscleData}
-                  muscleGroups={this.state.muscleGroups}
-                  loading={this.state.loading}
-                />
-              </Container>
-            </PrivateRoute>
             <PrivateRoute path="/calendar">
               <Container maxWidth="lg">
                 <MuscleApp
